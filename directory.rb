@@ -80,6 +80,9 @@ def save_students
 end
 
 def load_students(filename = "students.csv")
+  if !File.exist? filename
+      File.new filename, "w"
+  end
   file = File.open(filename, "r")
   file.readlines.each { |line|
   name, cohort = line.chomp.split(',')
