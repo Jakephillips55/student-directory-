@@ -43,10 +43,18 @@ def options(selection)
   when "2"
     show_students
   when "3"
-    save_students
+    puts "Enter filename"
+    filename = gets.chomp
+    if !filename.empty?
+      save_students filename
+    end
   when "4"
-    load_students
-    puts "Data saved"
+    puts "Enter filename"
+    filename = gets.chomp
+    if !filename.empty?
+      load_students filename
+    end
+    puts "Data loaded"
   when "9"
     exit
   else
@@ -69,8 +77,8 @@ def print_footer
   puts "Overall, we have #{@students.count} great students"
 end
 
-def save_students
-  file = File.open("students.csv", "w")
+def save_students(filename)
+  file = File.open(filename, "w")
   @students.each { |student|
     student_data = [student[:name], student[:cohort]]
     csv_line = student_data.join(",")
@@ -91,16 +99,4 @@ def load_students(filename = "students.csv")
   file.close
 end
 
-def try_load_students
-  filename = ARGV.first
-  return if filename.nil?
-  if File.exists?(filename)
-    load_students(filename)
-    puts "Loaded #{@students.count} from #{filename}"
-  else
-    puts "Sorry #{filename} dosen't exist."
-    exit
-  end
-end
-load_students
 interactive_menu
